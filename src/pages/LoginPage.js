@@ -1,3 +1,4 @@
+import { Alert, Box, Grid } from "@mui/material";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MyButton } from "../components/my-button/MyButton";
@@ -15,21 +16,20 @@ export const LoginPage = (props) => {
   };
 
   return (
-    <>LoginPage</>
-    // <Box>
-    //   <Grid container className="container custom padding bottom-2" justifyContent="center">
-    //     <Grid item>
-    //       <h1>{t("login").toUpperCase()}</h1>
-    //       <MyTextField label={t("username")} value={username} onChange={setUsername} regExp={ValidTextRegExp} />
-    //       <MyTextField type="password" label={t("password")} value={password} onChange={setPassword} />
-    //       <MyButton className="margin bottom-1" onClick={(e) => login()} text={t("login")} />
-    //       {message && (
-    //         <Alert variant="filled" severity="error" className="margin top-1 bottom-1">
-    //           {message}
-    //         </Alert>
-    //       )}
-    //     </Grid>
-    //   </Grid>
-    // </Box>
+    <Box>
+      <Grid container className="container custom padding bottom-2" justifyContent="center">
+        <Grid item>
+          <h1>{t("login").toUpperCase()}</h1>
+          <MyTextField label={t("username")} value={username} onChange={setUsername} regExp={ValidTextRegExp} />
+          <MyTextField type="password" label={t("password")} value={password} onChange={setPassword} />
+          <MyButton className="margin bottom-1" onClick={(e) => login()} text={t("login")} />
+          {message && (
+            <Alert variant="filled" severity="error" className="margin top-1 bottom-1">
+              {message}
+            </Alert>
+          )}
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
