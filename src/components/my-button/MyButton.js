@@ -1,5 +1,5 @@
-import { Button } from "@material-ui/core";
 import React from "react";
+import Button from "@mui/material/Button";
 export const MyButton = (props) => {
   return (
     <Button

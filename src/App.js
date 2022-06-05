@@ -2,14 +2,9 @@ import React, { Component } from "react";
 import MyProvider from "./contexts/MyProvider";
 import "./custom.css";
 import "./styles/main.scss";
-import { initializeIcons } from "office-ui-fabric-react/lib/Icons";
-import { MyThemeProvider } from "./infrastructure/MyThemeProvider";
-import { AdminSwitch } from "./infrastructure/AdminSwitch";
 import { DefaultSwitch } from "./infrastructure/DefaultSwitch";
-import { SnackbarProvider } from "notistack";
-import { SnackbarUtilsConfigurator } from "./SnackbarUtils";
-
-initializeIcons();
+// import { SnackbarProvider } from "notistack";
+// import { SnackbarUtilsConfigurator } from "./SnackbarUtils";
 
 export default class App extends Component {
   static displayName = App.name;
@@ -24,12 +19,9 @@ export default class App extends Component {
   render() {
     if (this.state.mode != "")
       return (
-        <MyThemeProvider>
-          <SnackbarProvider>
-            <SnackbarUtilsConfigurator />
-            <MyProvider {...this.state}>{this.state.mode === "admin" ? <AdminSwitch /> : <DefaultSwitch />}</MyProvider>
-          </SnackbarProvider>
-        </MyThemeProvider>
+        <MyProvider {...this.state}>
+          <DefaultSwitch />
+        </MyProvider>
       );
     return "";
   }

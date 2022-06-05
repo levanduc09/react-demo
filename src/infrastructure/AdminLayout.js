@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import { NavMenu } from "../components/NavMenu";
 import { lngs } from "../Constant";
-import SnackbarUtils from "../SnackbarUtils";
 
 export const AdminLayout = (props) => {
   const { t, i18n } = useTranslation();
