@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import MyProvider from "./contexts/MyProvider";
-import "./custom.css";
 import "./styles/main.scss";
 import { DefaultSwitch } from "./infrastructure/DefaultSwitch";
 // import { SnackbarProvider } from "notistack";
