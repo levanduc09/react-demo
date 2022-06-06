@@ -32,7 +32,11 @@ export const DashboardPage = (props) => {
 
   return (
     <div className="padding-1">
-      <input onChange={debouncedChangeHandler} placeholder="Type something" />
+      <input
+        onChange={debouncedChangeHandler}
+        placeholder="Type something"
+        className="margin bottom-1 padding-1"
+      />
       {items.map((item, index) => (
         <div key={index}>{item.title}</div>
       ))}

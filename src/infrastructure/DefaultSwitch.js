@@ -6,6 +6,7 @@ import { SettingsPage } from "../pages/settings-page/SettingsPage";
 import { Layout } from "./Layout";
 import { LogoutPage } from "../pages/logout-page/LogoutPage";
 import { RegisterPage } from "../pages/register-page/RegisterPage";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 export class DefaultSwitch extends Component {
   static displayName = Layout.name;
@@ -24,9 +25,11 @@ export class DefaultSwitch extends Component {
         <Route
           path="/settings"
           element={
-            <Layout>
-              <SettingsPage />
-            </Layout>
+            <ProtectedRoute>
+              <Layout>
+                <SettingsPage />
+              </Layout>
+            </ProtectedRoute>
           }
         />
         <Route
@@ -48,9 +51,11 @@ export class DefaultSwitch extends Component {
         <Route
           path="/logout"
           element={
-            <Layout>
-              <LogoutPage />
-            </Layout>
+            <ProtectedRoute>
+              <Layout>
+                <LogoutPage />
+              </Layout>
+            </ProtectedRoute>
           }
         />
       </Routes>
