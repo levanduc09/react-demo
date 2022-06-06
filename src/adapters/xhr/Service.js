@@ -1,6 +1,8 @@
 import axios from "axios";
 import { trackPromise } from "react-promise-tracker";
-import authService, { AuthorizeService } from "../../components/api-authorization/AuthorizeService";
+import authService, {
+  AuthorizeService,
+} from "../../components/api-authorization/AuthorizeService";
 // import SnackbarUtils from "../../SnackbarUtils";
 import { eraseCookie, getCookie } from "../../Utils";
 
@@ -13,7 +15,10 @@ export default class Service {
       baseURL += path;
     }
     this.service = this.axiosInstance(baseURL);
-    this.service.interceptors.response.use(this.handleSuccess, this.handleError);
+    this.service.interceptors.response.use(
+      this.handleSuccess,
+      this.handleError
+    );
   }
 
   axiosInstance(baseURL) {
@@ -23,11 +28,14 @@ export default class Service {
       headers: headers,
     });
     service.interceptors.request.use((config) => {
-      if (getCookie("jwToken")) config.headers.Authorization = "Bearer " + getCookie("jwToken");
+      if (getCookie("jwToken"))
+        config.headers.Authorization = "Bearer " + getCookie("jwToken");
       return config;
     });
-    service.defaults.headers.common["Accept"] = "application/json;charset=UTF-8";
-    service.defaults.headers.common["Content-Type"] = "application/json;charset=UTF-8";
+    service.defaults.headers.common["Accept"] =
+      "application/json;charset=UTF-8";
+    service.defaults.headers.common["Content-Type"] =
+      "application/json;charset=UTF-8";
     return service;
   }
 
@@ -43,9 +51,13 @@ export default class Service {
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        const result = await trackPromise(this.axiosInstance().post(`api/authenticate/RefreshToken`));
+        const result = await trackPromise(
+          this.axiosInstance().post(`api/authenticate/RefreshToken`)
+        );
         if (result) {
-          if (getCookie("jwToken")) originalRequest.headers.Authorization = "Bearer " + getCookie("jwToken");
+          if (getCookie("jwToken"))
+            originalRequest.headers.Authorization =
+              "Bearer " + getCookie("jwToken");
           return await trackPromise(axios.request(originalRequest));
         }
       } catch (err) {

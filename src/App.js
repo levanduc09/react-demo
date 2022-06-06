@@ -7,22 +7,11 @@ import { DefaultSwitch } from "./infrastructure/DefaultSwitch";
 // import { SnackbarUtilsConfigurator } from "./SnackbarUtils";
 
 export default class App extends Component {
-  static displayName = App.name;
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      mode: "public",
-    };
-  }
-
   render() {
-    if (this.state.mode != "")
-      return (
-        <MyProvider {...this.state}>
-          <DefaultSwitch />
-        </MyProvider>
-      );
-    return "";
+    return (
+      <MyProvider>
+        <DefaultSwitch />
+      </MyProvider>
+    );
   }
 }
