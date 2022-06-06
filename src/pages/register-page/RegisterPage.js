@@ -11,14 +11,39 @@ import MyContext from "../../contexts/MyContext";
 export const RegisterPage = (props) => {
   const { t, i18n } = useTranslation();
   const [username, setUsername] = useState("");
+  const [usernameErr, setUsernameErr] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailErr, setEmailErr] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordErr, setPasswordErr] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const myContext = useContext(MyContext);
 
   const register = () => {
-    myContext.addUsers({ username: username, password: password });
-    navigate("/login", { replace: true });
+    let isValid = true;
+    if (username == "") {
+      setUsernameErr(t("required"));
+      isValid = false;
+    } else {
+      setUsernameErr("");
+    }
+    if (email == "") {
+      setEmailErr(t("required"));
+      isValid = false;
+    } else {
+      setEmailErr("");
+    }
+    if (password == "") {
+      setPasswordErr(t("required"));
+      isValid = false;
+    } else {
+      setPasswordErr("");
+    }
+    if (isValid) {
+      myContext.addUsers({ username: username, password: password });
+      navigate("/login", { replace: true });
+    }
   };
   return (
     <MyContext.Consumer>
@@ -29,19 +54,28 @@ export const RegisterPage = (props) => {
             className="container custom padding bottom-2"
             justifyContent="center"
           >
-            <Grid item>
+            <Grid item xs={4}>
               <h1>{t("register").toUpperCase()}</h1>
               <MyTextField
                 label={t("username")}
                 value={username}
                 onChange={setUsername}
                 regExp={ValidTextRegExp}
+                helperText={usernameErr}
+              />
+              <MyTextField
+                label={t("email")}
+                value={email}
+                onChange={setEmail}
+                regExp={ValidTextRegExp}
+                helperText={emailErr}
               />
               <MyTextField
                 type="password"
                 label={t("password")}
                 value={password}
                 onChange={setPassword}
+                helperText={passwordErr}
               />
               <MyButton
                 className="margin bottom-1"
