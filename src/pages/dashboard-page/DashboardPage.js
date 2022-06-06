@@ -31,11 +31,11 @@ export const DashboardPage = (props) => {
   const debouncedChangeHandler = debounce(changeHandler, 500);
 
   return (
-    <>
+    <div className="padding-1">
       <input onChange={debouncedChangeHandler} placeholder="Type something" />
       {items.map((item, index) => (
         <div key={index}>{item.title}</div>
       ))}
-    </>
+    </div>
   );
 };
