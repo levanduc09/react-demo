@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-// import AlgoliaApiService from "../../adapters/xhr/AlgoliaApiService";
+import AlgoliaApiService from "../../adapters/xhr/AlgoliaApiService";
 
 export const DashboardPage = (props) => {
   const [value, setValue] = useState("");
@@ -16,16 +16,8 @@ export const DashboardPage = (props) => {
   }
 
   const getData = async () => {
-    //let result = await AlgoliaApiService.getAll(value);
-    //setItems(result.hits);
-    fetch("https://hn.algolia.com/api/v1/search?query=" + value)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setItems(result.hits);
-        },
-        (error) => {}
-      );
+    let result = await AlgoliaApiService.getAll(value);
+    setItems(result.hits);
   };
 
   const changeHandler = (event) => {
