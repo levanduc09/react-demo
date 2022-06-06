@@ -1,19 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import AlgoliaApiService from "../../adapters/xhr/AlgoliaApiService";
+import { debounce } from "../../Utils";
 
 export const DashboardPage = (props) => {
   const [value, setValue] = useState("");
   const [items, setItems] = useState([]);
-
-  function debounce(func, timeout = 300) {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        func.apply(this, args);
-      }, timeout);
-    };
-  }
 
   const getData = async () => {
     let result = await AlgoliaApiService.getAll(value);

@@ -40,7 +40,7 @@ export const LoginPage = (props) => {
                 label={t("username")}
                 value={username}
                 onChange={setUsername}
-                //regExp={ValidTextRegExp}
+                regExp={ValidTextRegExp}
               />
               <MyTextField
                 type="password"
