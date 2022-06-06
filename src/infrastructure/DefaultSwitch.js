@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Routes, Route } from "react-router-dom";
 import { DashboardPage } from "../pages/dashboard-page/DashboardPage";
-import AuthorizeRoute from "../components/api-authorization/AuthorizeRoute";
 import { LoginPage } from "../pages/login-page/LoginPage";
 import { SettingsPage } from "../pages/settings-page/SettingsPage";
 import { Layout } from "./Layout";
