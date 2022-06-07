@@ -1,4 +1,5 @@
 import axios from "axios";
+import { trackPromise } from "react-promise-tracker";
 // import SnackbarUtils from "../../SnackbarUtils";
 import { eraseCookie, getCookie } from "../../Utils";
 
@@ -83,7 +84,7 @@ export default class Service {
   };
 
   async get(path, callback) {
-    const response = await this.service.get(path);
+    const response = await trackPromise(this.service.get(path));
     return callback(response.status, response.data);
   }
 
