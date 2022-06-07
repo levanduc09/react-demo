@@ -33,7 +33,7 @@ export const LoginPage = (props) => {
     let result = await AuthApiService.login(username, password);
     if (result.status == 200) {
       SnackbarUtils.success("success");
-      myContext.changeRole(result.role);
+      myContext.changeRole(result.user.role);
       myContext.changeAuthorized(true);
       navigate("/", { replace: true });
     } else if (result.status == 401) {
