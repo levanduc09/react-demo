@@ -19,6 +19,7 @@ import Tooltip from "@mui/material/Tooltip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
+import UpdateIcon from "@mui/icons-material/Update";
 import AddIcon from "@mui/icons-material/Add";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
@@ -141,11 +142,18 @@ const EnhancedTableToolbar = (props) => {
       </Typography>
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton onClick={props.onDelete}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        <>
+          <Tooltip title="Update">
+            <IconButton onClick={props.onUpdate}>
+              <UpdateIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton onClick={props.onDelete}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </>
       ) : (
         <Tooltip title="Filter list">
           <IconButton>
@@ -165,7 +173,16 @@ export const SettingsPage = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState([]);
   const [mode, setMode] = useState("");
-  const [animalToAdd, setAnimalToAdd] = useState({});
+  const [animalToAdd, setAnimalToAdd] = useState({
+    age: "",
+    name: "",
+    type: "",
+  });
+  const [animalToUpdate, setAnimalToUpdate] = useState({
+    age: "",
+    name: "",
+    type: "",
+  });
 
   const getAnimals = async () => {
     let result = await AnimalApiService.getAnimals();
@@ -173,8 +190,11 @@ export const SettingsPage = () => {
   };
 
   const deleteAnimal = async () => {
-    let result = await AnimalApiService.deleteAnimal(1);
-    setRows(result.filter((item) => item.id != result.id));
+    let result = await AnimalApiService.deleteAnimal(selected[0]);
+    if (result) {
+      setSelected([]);
+      setRows(rows.filter((item) => item.id != result.id));
+    }
   };
 
   const addAnimal = async () => {
@@ -182,6 +202,18 @@ export const SettingsPage = () => {
     if (result) {
       setMode("");
       setRows([...rows, result]);
+    }
+  };
+
+  const updateAnimal = async () => {
+    let result = await AnimalApiService.updateAnimal(
+      selected[0],
+      animalToUpdate
+    );
+    if (result) {
+      setMode("");
+      setSelected([]);
+      setRows([...rows.filter((item) => item.id != result.id), result]);
     }
   };
 
@@ -195,21 +227,12 @@ export const SettingsPage = () => {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -222,6 +245,7 @@ export const SettingsPage = () => {
     }
 
     setSelected(newSelected);
+    setAnimalToUpdate(rows.find((item) => item.id == newSelected[0]));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -233,7 +257,7 @@ export const SettingsPage = () => {
     setPage(0);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -245,6 +269,7 @@ export const SettingsPage = () => {
           <EnhancedTableToolbar
             numSelected={selected.length}
             onDelete={(e) => deleteAnimal()}
+            onUpdate={(e) => setMode("update")}
             onAdd={(e) => setMode("add")}
           />
           <TableContainer>
@@ -257,7 +282,6 @@ export const SettingsPage = () => {
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
               />
               <TableBody>
@@ -266,17 +290,17 @@ export const SettingsPage = () => {
                 {stableSort(rows, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    const isItemSelected = isSelected(row.name);
+                    const isItemSelected = isSelected(row.id);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.name)}
+                        onClick={(event) => handleClick(event, row.id)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.name}
+                        key={row.id}
                         selected={isItemSelected}
                       >
                         <TableCell padding="checkbox">
@@ -328,27 +352,21 @@ export const SettingsPage = () => {
       <Dialog open={mode == "add"}>
         <DialogTitle>{"Add animal"}</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
-          </DialogContentText> */}
-          <MyTextField
-            label="id"
-            // value={animalToAdd.id}
-            onChange={(value) => setAnimalToAdd({ ...animalToAdd, id: value })}
-          />
           <MyTextField
             label="age"
+            value={animalToAdd.age}
             onChange={(value) => setAnimalToAdd({ ...animalToAdd, age: value })}
           />
           <MyTextField
             label="name"
+            value={animalToAdd.name}
             onChange={(value) =>
               setAnimalToAdd({ ...animalToAdd, name: value })
             }
           />
           <MyTextField
             label="type"
+            value={animalToAdd.type}
             onChange={(value) =>
               setAnimalToAdd({ ...animalToAdd, type: value })
             }
@@ -357,6 +375,36 @@ export const SettingsPage = () => {
         <DialogActions>
           <Button onClick={(e) => setMode("")}>Cancel</Button>
           <Button onClick={(e) => addAnimal()}>Add</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={mode == "update"}>
+        <DialogTitle>{"Update animal"}</DialogTitle>
+        <DialogContent>
+          <MyTextField
+            label="age"
+            value={animalToUpdate?.age}
+            onChange={(value) =>
+              setAnimalToUpdate({ ...animalToUpdate, age: value })
+            }
+          />
+          <MyTextField
+            label="name"
+            value={animalToUpdate?.name}
+            onChange={(value) =>
+              setAnimalToUpdate({ ...animalToUpdate, name: value })
+            }
+          />
+          <MyTextField
+            label="type"
+            value={animalToUpdate?.type}
+            onChange={(value) =>
+              setAnimalToUpdate({ ...animalToUpdate, type: value })
+            }
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={(e) => setMode("")}>Cancel</Button>
+          <Button onClick={(e) => updateAnimal()}>Update</Button>
         </DialogActions>
       </Dialog>
     </>

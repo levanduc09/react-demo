@@ -20,11 +20,16 @@ export const LoginPage = (props) => {
   const myContext = useContext(MyContext);
 
   const login = async () => {
-    if (!username) setUsernameErr(t("required"));
-    else setUsernameErr("");
-    if (!password) setPasswordErr(t("required"));
-    else setPasswordErr("");
-    if (usernameErr != "" || passwordErr != "") return;
+    let isValid = true;
+    if (!username) {
+      setUsernameErr(t("required"));
+      isValid = false;
+    } else setUsernameErr("");
+    if (!password) {
+      setPasswordErr(t("required"));
+      isValid = false;
+    } else setPasswordErr("");
+    if (!isValid) return;
     let result = await AuthApiService.login(username, password);
     if (result.status == 200) {
       SnackbarUtils.success("success");
