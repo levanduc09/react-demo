@@ -27,28 +27,28 @@ export const RegisterPage = (props) => {
     let isValid = true;
     let validEmail = new RegExp(EmailRegExp);
     if (username == "") {
-      setUsernameErr(t("required"));
+      setUsernameErr(t("Required"));
       isValid = false;
     } else {
       setUsernameErr("");
     }
     if (email == "") {
-      setEmailErr(t("required"));
+      setEmailErr(t("Required"));
       isValid = false;
     } else if (!validEmail.test(email)) {
-      setEmailErr("invalid");
+      setEmailErr("Invalid");
     } else setEmailErr("");
     if (password == "") {
-      setPasswordErr(t("required"));
+      setPasswordErr(t("Required"));
       isValid = false;
     } else if (password.length <= 5) {
       setPasswordErr("should be more than 5 characters");
     } else setPasswordErr("");
     if (confirmPassword == "") {
-      setConfirmPasswordErr(t("required"));
+      setConfirmPasswordErr(t("Required"));
       isValid = false;
     } else if (confirmPassword != password) {
-      setConfirmPasswordErr("doesn't match");
+      setConfirmPasswordErr("Doesn't match");
       isValid = false;
     } else {
       setConfirmPasswordErr("");
@@ -75,14 +75,14 @@ export const RegisterPage = (props) => {
             <Grid item xs={4}>
               <h1>{t("register").toUpperCase()}</h1>
               <MyTextField
-                label={t("username")}
+                label={t("Username")}
                 value={username}
                 onChange={setUsername}
                 regExp={ValidTextRegExp}
                 helperText={usernameErr}
               />
               <MyTextField
-                label={t("email")}
+                label={t("Email")}
                 value={email}
                 onChange={setEmail}
                 regExp={ValidTextRegExp}
@@ -90,14 +90,14 @@ export const RegisterPage = (props) => {
               />
               <MyTextField
                 type="password"
-                label={t("password")}
+                label={t("Password")}
                 value={password}
                 onChange={setPassword}
                 helperText={passwordErr}
               />
               <MyTextField
                 type="password"
-                label={t("confirm password")}
+                label={t("Confirm password")}
                 value={confirmPassword}
                 onChange={setConfirmPassword}
                 helperText={confirmPasswordErr}

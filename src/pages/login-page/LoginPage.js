@@ -53,7 +53,7 @@ export const LoginPage = (props) => {
             <Grid item>
               <h1>{t("login").toUpperCase()}</h1>
               <MyTextField
-                label={t("username")}
+                label={t("Username")}
                 value={username}
                 onChange={setUsername}
                 regExp={ValidTextRegExp}
@@ -61,7 +61,7 @@ export const LoginPage = (props) => {
               />
               <MyTextField
                 type="password"
-                label={t("password")}
+                label={t("Password")}
                 value={password}
                 onChange={setPassword}
                 helperText={passwordErr}
