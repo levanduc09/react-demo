@@ -8,6 +8,7 @@ import { MyButton } from "../../components/my-button/MyButton";
 import { MyTextField } from "../../components/my-text-field/MyTextField";
 import { ValidTextRegExp } from "../../Constant";
 import MyContext from "../../contexts/MyContext";
+import SnackbarUtils from "../../SnackbarUtils";
 
 export const LoginPage = (props) => {
   const { t, i18n } = useTranslation();
@@ -27,6 +28,7 @@ export const LoginPage = (props) => {
     if (usernameErr != "" || passwordErr != "") return;
     let result = await AuthApiService.login(username, password);
     if (result.status == 200) {
+      SnackbarUtils.success("success");
       myContext.changeRole(result.role);
       myContext.changeAuthorized(true);
       navigate("/", { replace: true });

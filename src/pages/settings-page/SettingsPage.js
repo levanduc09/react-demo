@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -21,6 +21,7 @@ import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
+import AnimalApiService from "../../adapters/xhr/AnimalApiService";
 
 function createData(name, calories, fat, carbs, protein) {
   return {
@@ -238,6 +239,15 @@ export const SettingsPage = () => {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const getAnimals = async () => {
+    let result = await AnimalApiService.getAnimals();
+    console.log(result);
+  };
+
+  useEffect(() => {
+    getAnimals();
+  }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
