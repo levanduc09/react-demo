@@ -1,8 +1,9 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Link } from "@mui/material";
 import React, { useCallback, useContext, useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Alert } from "reactstrap";
+import AuthApiService from "../../api/AuthApiService";
 import { MyButton } from "../../components/my-button/MyButton";
 import { MyTextField } from "../../components/my-text-field/MyTextField";
 import { EmailRegExp, ValidTextRegExp } from "../../Constant";
@@ -16,11 +17,13 @@ export const RegisterPage = (props) => {
   const [emailErr, setEmailErr] = useState("");
   const [password, setPassword] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordErr, setConfirmPasswordErr] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const myContext = useContext(MyContext);
 
-  const register = () => {
+  const register = async () => {
     let isValid = true;
     let validEmail = new RegExp(EmailRegExp);
     if (username == "") {
@@ -38,12 +41,26 @@ export const RegisterPage = (props) => {
     if (password == "") {
       setPasswordErr(t("required"));
       isValid = false;
+    } else if (password.length <= 5) {
+      setPasswordErr("should be more than 5 characters");
+    } else setPasswordErr("");
+    if (confirmPassword == "") {
+      setConfirmPasswordErr(t("required"));
+      isValid = false;
+    } else if (confirmPassword != password) {
+      setConfirmPasswordErr("doesn't match");
+      isValid = false;
     } else {
-      setPasswordErr("");
+      setConfirmPasswordErr("");
     }
     if (isValid) {
-      myContext.addUsers({ username: username, password: password });
-      navigate("/login", { replace: true });
+      let result = await AuthApiService.register({
+        username: username,
+        password: password,
+      });
+      if (result) {
+        navigate("/login", { replace: true });
+      }
     }
   };
   return (
@@ -78,11 +95,19 @@ export const RegisterPage = (props) => {
                 onChange={setPassword}
                 helperText={passwordErr}
               />
+              <MyTextField
+                type="password"
+                label={t("confirm password")}
+                value={confirmPassword}
+                onChange={setConfirmPassword}
+                helperText={confirmPasswordErr}
+              />
               <MyButton
-                className="margin bottom-1"
+                className="margin bottom-1 right-1"
                 onClick={(e) => register()}
                 text={t("register")}
               />
+              <Link href="/login">Login?</Link>
               {message && (
                 <Alert
                   variant="filled"

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { trackPromise } from "react-promise-tracker";
-// import SnackbarUtils from "../../SnackbarUtils";
-import { eraseCookie, getCookie } from "../../Utils";
+import { eraseCookie, getCookie } from "../utils/Utils";
 
 export default class Service {
   constructor(path, baseURL) {

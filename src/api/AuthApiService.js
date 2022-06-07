@@ -1,5 +1,5 @@
 import { trackPromise } from "react-promise-tracker";
-import { roles } from "../../Constant";
+import { roles } from "../Constant";
 import Service from "./Service";
 
 class AuthApiService extends Service {
@@ -24,6 +24,19 @@ class AuthApiService extends Service {
           resolve({
             status: status,
             role: role,
+          });
+        }, 1500);
+      })
+    );
+  }
+
+  register(payload) {
+    return trackPromise(
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            status: 200,
+            payload: payload,
           });
         }, 1500);
       })

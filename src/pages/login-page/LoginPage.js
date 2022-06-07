@@ -2,13 +2,12 @@ import { Alert, Box, Grid, Link } from "@mui/material";
 import React, { useCallback, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import AuthApiService from "../../adapters/xhr/AuthApiService";
-import authService from "../../components/api-authorization/AuthorizeService";
+import AuthApiService from "../../api/AuthApiService";
 import { MyButton } from "../../components/my-button/MyButton";
 import { MyTextField } from "../../components/my-text-field/MyTextField";
 import { ValidTextRegExp } from "../../Constant";
 import MyContext from "../../contexts/MyContext";
-import SnackbarUtils from "../../SnackbarUtils";
+import SnackbarUtils from "../../utils/SnackbarUtils";
 
 export const LoginPage = (props) => {
   const { t, i18n } = useTranslation();

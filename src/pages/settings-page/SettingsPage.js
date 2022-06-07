@@ -22,8 +22,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
-import AnimalApiService from "../../adapters/xhr/AnimalApiService";
-import { getComparator, stableSort } from "../../Utils";
+import AnimalApiService from "../../api/AnimalApiService";
 import {
   Button,
   Dialog,
@@ -32,6 +31,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { MyTextField } from "../../components/my-text-field/MyTextField";
+import { getComparator, stableSort } from "../../utils/Utils";
 
 const headCells = [
   {

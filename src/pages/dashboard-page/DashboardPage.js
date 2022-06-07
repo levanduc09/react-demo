@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import AlgoliaApiService from "../../adapters/xhr/AlgoliaApiService";
-import { debounce } from "../../Utils";
+import AlgoliaApiService from "../../api/AlgoliaApiService";
+import { debounce } from "../../utils/Utils";
 
 export const DashboardPage = (props) => {
   const [value, setValue] = useState("");
