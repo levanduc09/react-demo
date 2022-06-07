@@ -103,31 +103,37 @@ export default class Service {
   }
 
   async post(path, payload, callback) {
-    const response = await this.service.request({
-      method: "POST",
-      url: path,
-      responseType: "json",
-      data: payload,
-    });
+    const response = await trackPromise(
+      this.service.request({
+        method: "POST",
+        url: path,
+        responseType: "json",
+        data: payload,
+      })
+    );
     return callback(response.status, response.data);
   }
 
   async put(path, payload, callback) {
-    const response = await this.service.request({
-      method: "PUT",
-      url: path,
-      responseType: "json",
-      data: payload,
-    });
+    const response = await trackPromise(
+      this.service.request({
+        method: "PUT",
+        url: path,
+        responseType: "json",
+        data: payload,
+      })
+    );
     return callback(response.status, response.data);
   }
 
   async delete(path, callback) {
-    const response = await this.service.request({
-      method: "DELETE",
-      url: path,
-      responseType: "json",
-    });
+    const response = await trackPromise(
+      this.service.request({
+        method: "DELETE",
+        url: path,
+        responseType: "json",
+      })
+    );
     return callback(response.status, response.data);
   }
 }

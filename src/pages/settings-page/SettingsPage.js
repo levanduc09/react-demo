@@ -164,7 +164,7 @@ export const SettingsPage = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState([]);
-  const [addAnimal, setAddAnimal] = useState(false);
+  const [mode, setMode] = useState("");
   const [animalToAdd, setAnimalToAdd] = useState({});
 
   const getAnimals = async () => {
@@ -175,6 +175,14 @@ export const SettingsPage = () => {
   const deleteAnimal = async () => {
     let result = await AnimalApiService.deleteAnimal(1);
     setRows(result.filter((item) => item.id != result.id));
+  };
+
+  const addAnimal = async () => {
+    let result = await AnimalApiService.addAnimal(animalToAdd);
+    if (result) {
+      setMode("");
+      setRows([...rows, result]);
+    }
   };
 
   useEffect(() => {
@@ -230,7 +238,6 @@ export const SettingsPage = () => {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
   return (
     <>
       <Box sx={{ width: "100%" }}>
@@ -238,7 +245,7 @@ export const SettingsPage = () => {
           <EnhancedTableToolbar
             numSelected={selected.length}
             onDelete={(e) => deleteAnimal()}
-            onAdd={(e) => setAddAnimal(true)}
+            onAdd={(e) => setMode("add")}
           />
           <TableContainer>
             <Table
@@ -318,7 +325,7 @@ export const SettingsPage = () => {
           />
         </Paper>
       </Box>
-      <Dialog open={addAnimal}>
+      <Dialog open={mode == "add"}>
         <DialogTitle>{"Add animal"}</DialogTitle>
         <DialogContent>
           {/* <DialogContentText>
@@ -328,15 +335,28 @@ export const SettingsPage = () => {
           <MyTextField
             label="id"
             // value={animalToAdd.id}
-            onChange={(value) => setAddAnimal({ id: value })}
+            onChange={(value) => setAnimalToAdd({ ...animalToAdd, id: value })}
           />
-          <MyTextField label="age" value={animalToAdd.age} />
-          <MyTextField label="name" value={animalToAdd.name} />
-          <MyTextField label="type" value={animalToAdd.type} />
+          <MyTextField
+            label="age"
+            onChange={(value) => setAnimalToAdd({ ...animalToAdd, age: value })}
+          />
+          <MyTextField
+            label="name"
+            onChange={(value) =>
+              setAnimalToAdd({ ...animalToAdd, name: value })
+            }
+          />
+          <MyTextField
+            label="type"
+            onChange={(value) =>
+              setAnimalToAdd({ ...animalToAdd, type: value })
+            }
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={(e) => setAddAnimal(false)}>Cancel</Button>
-          <Button onClick={(e) => setAddAnimal(true)}>Add</Button>
+          <Button onClick={(e) => setMode("")}>Cancel</Button>
+          <Button onClick={(e) => addAnimal()}>Add</Button>
         </DialogActions>
       </Dialog>
     </>
